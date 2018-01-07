@@ -335,18 +335,4 @@ public class MapperBuilder <S> {
             return new FunctionWrapper(true);
         }
     }
-
-    /*private static BiConsumer<SimplePojo,SimplePojo> SIMPLE_POJO_MAPPER_2 = (SimplePojo objectToSet, SimplePojo objectToGet) -> {
-        MapperBuilder.createBuilder(objectToSet)
-                .withSetter(SimplePojo::setParam1,"a")
-                .withSetter(SimplePojo::setParam2,"b")
-                    .whitStartCondition(() -> "a".equals("a"))
-                        .whitStartCondition(() -> "d".equals("d"))
-                            .withSetter(SimplePojo::setParam1,"c")
-                        .whitEndCondition()
-                    .withSetter(SimplePojo::setParam2,objectToGet,SimplePojo::getParam2)
-                .whitEndCondition()
-                .withSetter(objectToSet,SimplePojo::setParam2,"b")
-                .apply();
-    };*/
 }

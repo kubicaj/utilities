@@ -1,5 +1,11 @@
 package com.kubicaj.mapper.function;
 
+/**
+ * function interface represented getter function
+ *
+ * @param <T> - type of invoking object
+ * @param <R> - type of return value
+ */
 @FunctionalInterface
 public interface GetterFunction<T, R>extends ProcessingFunction {
 

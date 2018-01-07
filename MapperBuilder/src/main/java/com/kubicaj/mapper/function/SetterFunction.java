@@ -1,5 +1,11 @@
 package com.kubicaj.mapper.function;
 
+/**
+ * function interface represented setter function
+ *
+ * @param <T> - type of invoking object
+ * @param <U> - type of setter input argument
+ */
 @FunctionalInterface
 public interface SetterFunction<T, U> {
 

@@ -102,7 +102,7 @@ public class MapperBuilder <S> {
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * add processing of {@code setterFunction} method of object {@code objectToSet} whit input parameter value
+     * add processing of {@code setterFunction} method of object {@code objectToSet} with input parameter value
      * as return from {@code getterFunction} function of object {@code objectToGet}
      *
      * @param objectToSet - object for which we are setting a value
@@ -120,7 +120,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * add processing of {@code setterFunction} method of object {@code objectToSet} whit input parameter as {@code valueToSet}
+     * add processing of {@code setterFunction} method of object {@code objectToSet} with input parameter as {@code valueToSet}
      *
      * @param objectToSet - object for which we are setting a value
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
@@ -135,7 +135,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * add processing of {@code setterFunction} method of object {@link this#objectToSet} whit input parameter value
+     * add processing of {@code setterFunction} method of object {@link this#objectToSet} with input parameter value
      * as return from {@code getterFunction} function of object {@code objectToGet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
@@ -152,7 +152,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * add processing of {@code setterFunction} method of object {@link this#objectToSet} whit input parameter as {@code valueToSet}
+     * add processing of {@code setterFunction} method of object {@link this#objectToSet} with input parameter as {@code valueToSet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
      * @param valueToSet - input parameter into method {@code setterFunction}
@@ -166,7 +166,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * start condition processing. Condition is evaluated according {@code conditionFunction}
+     * start processing with condition. Condition is evaluated according {@code conditionFunction}
      *
      * @param conditionFunction
      *
@@ -188,7 +188,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * Method call to process all function added into builder. The method are processing in order its were add into builder.
+     * Method process all functions added into builder. The functions are processing in order its were add into builder.
      */
     public S apply(){
         applyWhitCondition(true,processingFunctions.iterator());
@@ -196,7 +196,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * Method call to process all function added into builder. The method are processing in order its were add into builder.
+     * Method process all functions added into builder. The functions are processing in order its were add into builder.
      * It is call in {@link MapperBuilder#apply()} as recursive processing of builder
      *
      * @param conditionEvaluationValue - evaluated condition - if false then processing of several function may be skip

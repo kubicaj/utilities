@@ -10,15 +10,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 /**
  * Builder of object of type {@code S}
  *
  * @param <S> - type of object which is creating in builder
  */
-public class MapperBuilder <S> {
+public class MapperBuilder <S> implements IMapperBuilder{
 
     // -----------------------------------------------------------------------------------------------------------------
     // ATTRIBUTES
@@ -26,37 +24,37 @@ public class MapperBuilder <S> {
 
     private MapperOptions mapperOptions;
     private List<FunctionWrapper> processingFunctions = new ArrayList<>();
-    private final S objectToSet;
-    private final Class<S> objectToSetType;
+    private final S destinationObject;
+    private final Class<S> destinationObjectType;
 
     // -----------------------------------------------------------------------------------------------------------------
     // CONSTRUCTORS
     // -----------------------------------------------------------------------------------------------------------------
 
-    protected MapperBuilder(MapperOptions mapperOptions, Class<S> objectToSetType) {
+    protected MapperBuilder(MapperOptions mapperOptions, Class<S> destinationObjectType) {
         try {
             this.mapperOptions = mapperOptions;
-            this.objectToSetType = objectToSetType;
-            this.objectToSet = objectToSetType.getConstructor().newInstance();
+            this.destinationObjectType = destinationObjectType;
+            this.destinationObject = destinationObjectType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException("Not able to create Builder",e);
         }
     }
 
-    protected MapperBuilder(Class<S> objectToSetType){
+    protected MapperBuilder(Class<S> destinationObjectType){
         try{
             this.mapperOptions = new MapperOptions();
-            this.objectToSetType = objectToSetType;
-            this.objectToSet = objectToSetType.getConstructor().newInstance();
+            this.destinationObjectType = destinationObjectType;
+            this.destinationObject = destinationObjectType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException("Not able to create Builder",e);
         }
     }
 
-    protected MapperBuilder(S objectToSet, Class<S> objectToSetType){
+    protected MapperBuilder(S destinationObject, Class<S> destinationObjectType){
         this.mapperOptions = new MapperOptions();
-        this.objectToSetType = objectToSetType;
-        this.objectToSet = objectToSet;
+        this.destinationObjectType = destinationObjectType;
+        this.destinationObject = destinationObject;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -98,6 +96,27 @@ public class MapperBuilder <S> {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    // ABSTRACT METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @see IMapperBuilder#apply()
+     */
+    @Override
+    public S apply(){
+        applyWhitCondition(true,processingFunctions.iterator());
+        return destinationObject;
+    }
+
+    /**
+     * @see IMapperBuilder#getDestinationType()
+     */
+    @Override
+    public Class getDestinationType() {
+        return destinationObjectType;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
     // OTHERS
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -135,7 +154,7 @@ public class MapperBuilder <S> {
     }
 
     /**
-     * add processing of {@code setterFunction} method of object {@link this#objectToSet} with input parameter value
+     * add processing of {@code setterFunction} method of object {@link this#destinationObject} with input parameter value
      * as return from {@code getterFunction} function of object {@code objectToGet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
@@ -147,12 +166,12 @@ public class MapperBuilder <S> {
      * @return this instance of {@link MapperBuilder}
      */
     public <R,G> MapperBuilder<S> withSetter(SetterFunction<S,R> setterFunction, G objectToGet, GetterFunction<G,R> getterFunction){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.objectToSet,setterFunction,getterFunction.apply(objectToGet))));
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject,setterFunction,getterFunction.apply(objectToGet))));
         return this;
     }
 
     /**
-     * add processing of {@code setterFunction} method of object {@link this#objectToSet} with input parameter as {@code valueToSet}
+     * add processing of {@code setterFunction} method of object {@link this#destinationObject} with input parameter as {@code valueToSet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
      * @param valueToSet - input parameter into method {@code setterFunction}
@@ -161,7 +180,7 @@ public class MapperBuilder <S> {
      * @return this instance of {@link MapperBuilder}
      */
     public <R> MapperBuilder<S> withSetter(SetterFunction<S,R> setterFunction, R valueToSet){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.objectToSet,setterFunction,valueToSet)));
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject,setterFunction,valueToSet)));
         return this;
     }
 
@@ -189,14 +208,6 @@ public class MapperBuilder <S> {
 
     /**
      * Method process all functions added into builder. The functions are processing in order its were add into builder.
-     */
-    public S apply(){
-        applyWhitCondition(true,processingFunctions.iterator());
-        return objectToSet;
-    }
-
-    /**
-     * Method process all functions added into builder. The functions are processing in order its were add into builder.
      * It is call in {@link MapperBuilder#apply()} as recursive processing of builder
      *
      * @param conditionEvaluationValue - evaluated condition - if false then processing of several function may be skip
@@ -211,20 +222,19 @@ public class MapperBuilder <S> {
         FunctionWrapper nextFunctionWrapper = functionIterator.next();
         if(!conditionEvaluationValue){
             // check if end condition is in order to process
-            if(nextFunctionWrapper.isEndCondition){
+            if(nextFunctionWrapper.isEndCondition()){
                 applyWhitCondition(true,functionIterator);
             } else {
                 applyWhitCondition(conditionEvaluationValue, functionIterator);
             }
         } else {
-            ProcessingFunction nextFunction = nextFunctionWrapper.getProcessingFunction();
-            if (nextFunction instanceof MapperBuilder.SetterRepresentation) {
+            if (nextFunctionWrapper.isSetterRepresentation()) {
                 // in case of SetterRepresentation process setter function and continue processing
-                ((SetterRepresentation) nextFunction).process();
+                ((SetterRepresentation) nextFunctionWrapper.getProcessingFunction()).process();
                 applyWhitCondition(conditionEvaluationValue, functionIterator);
-            } else if (nextFunction instanceof ConditionFunction) {
+            } else if (nextFunctionWrapper.isConditionFunction()) {
                 // in case of ConditionFunction evaluate condition and continue processing
-                applyWhitCondition(((ConditionFunction) nextFunction).test(), functionIterator);
+                applyWhitCondition(((ConditionFunction) nextFunctionWrapper.getProcessingFunction()).test(), functionIterator);
             } else {
                 applyWhitCondition(conditionEvaluationValue, functionIterator);
             }
@@ -311,12 +321,12 @@ public class MapperBuilder <S> {
             return isEndCondition;
         }
 
-        public boolean isGetFunction(){
-            return processingFunction!=null && processingFunction instanceof GetterFunction;
+        public boolean isConditionFunction(){
+            return processingFunction!=null && processingFunction instanceof ConditionFunction;
         }
 
-        public boolean isSetFunction(){
-            return processingFunction!=null && processingFunction instanceof SetterFunction;
+        public boolean isSetterRepresentation(){
+            return processingFunction!=null && processingFunction instanceof MapperBuilder.SetterRepresentation;
         }
 
         public ProcessingFunction getProcessingFunction() {

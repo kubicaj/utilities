@@ -5,7 +5,7 @@ import com.kubicaj.mapper.exception.MapperException;
 /**
  * Class represented options for mapping object
  *
- * It include options for behaving in case of error
+ * It include options for behaving in case of error, reflection options,...
  *
  */
 public class MapperOptions {
@@ -33,6 +33,8 @@ public class MapperOptions {
      * The default value = true
      */
     private boolean autoThrowCustomErrorIfNull = true;
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
     // GETTERS AND SETTERS

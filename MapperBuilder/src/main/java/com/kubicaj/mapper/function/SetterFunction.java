@@ -1,4 +1,4 @@
-package com.profinit.mapper.function;
+package com.kubicaj.mapper.function;
 
 @FunctionalInterface
 public interface SetterFunction<T, U> {

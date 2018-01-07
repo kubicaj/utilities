@@ -1,4 +1,4 @@
-package com.profinit.mapper;
+package com.kubicaj.mapper;
 
 public class SimplePojo {
 

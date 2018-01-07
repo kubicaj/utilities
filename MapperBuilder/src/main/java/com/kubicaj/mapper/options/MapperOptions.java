@@ -1,6 +1,6 @@
-package com.profinit.mapper.options;
+package com.kubicaj.mapper.options;
 
-import com.profinit.mapper.exception.MapperException;
+import com.kubicaj.mapper.exception.MapperException;
 
 /**
  * Class represented options for mapping object
@@ -16,7 +16,7 @@ public class MapperOptions {
 
     /**
      * Class of type {@link Throwable} which will throw in case of NPE excetpion
-     * Default = Class of type {@link com.profinit.mapper.exception.MapperException} is set in {@link MapperOptions#getNullErrorExceptionType()}
+     * Default = Class of type {@link MapperException} is set in {@link MapperOptions#getNullErrorExceptionType()}
      */
     private Class<? extends RuntimeException> nullErrorExceptionType = null;
 

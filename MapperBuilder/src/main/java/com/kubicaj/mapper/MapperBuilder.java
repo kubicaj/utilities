@@ -1,14 +1,16 @@
-package com.profinit.mapper;
+package com.kubicaj.mapper;
 
-import com.profinit.mapper.function.*;
-import com.profinit.mapper.options.MapperOptions;
+import com.kubicaj.mapper.function.ConditionFunction;
+import com.kubicaj.mapper.function.GetterFunction;
+import com.kubicaj.mapper.function.ProcessingFunction;
+import com.kubicaj.mapper.function.SetterFunction;
+import com.kubicaj.mapper.options.MapperOptions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**

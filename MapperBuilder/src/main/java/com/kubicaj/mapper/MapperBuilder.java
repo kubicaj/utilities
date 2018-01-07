@@ -26,18 +26,37 @@ public class MapperBuilder <S> {
 
     private MapperOptions mapperOptions;
     private List<FunctionWrapper> processingFunctions = new ArrayList<>();
-    private S objectToSet;
+    private final S objectToSet;
+    private final Class<S> objectToSetType;
 
     // -----------------------------------------------------------------------------------------------------------------
     // CONSTRUCTORS
     // -----------------------------------------------------------------------------------------------------------------
 
-    protected MapperBuilder(MapperOptions mapperOptions) {
-        this.mapperOptions = mapperOptions;
+    protected MapperBuilder(MapperOptions mapperOptions, Class<S> objectToSetType) {
+        try {
+            this.mapperOptions = mapperOptions;
+            this.objectToSetType = objectToSetType;
+            this.objectToSet = objectToSetType.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException("Not able to create Builder",e);
+        }
     }
 
-    protected MapperBuilder(){
+    protected MapperBuilder(Class<S> objectToSetType){
+        try{
+            this.mapperOptions = new MapperOptions();
+            this.objectToSetType = objectToSetType;
+            this.objectToSet = objectToSetType.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException("Not able to create Builder",e);
+        }
+    }
+
+    protected MapperBuilder(S objectToSet, Class<S> objectToSetType){
         this.mapperOptions = new MapperOptions();
+        this.objectToSetType = objectToSetType;
+        this.objectToSet = objectToSet;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -52,7 +71,7 @@ public class MapperBuilder <S> {
      * @return
      */
     public static <S> MapperBuilder<S> createBuilder(Class<S> builderType){
-        return new MapperBuilder<S>();
+        return new MapperBuilder<S>(builderType);
     }
 
     /**
@@ -64,7 +83,7 @@ public class MapperBuilder <S> {
      * @return
      */
     public static <S> MapperBuilder<S> createBuilder(Class<S> builderType,MapperOptions mapperOptions){
-        return new MapperBuilder<S>(mapperOptions);
+        return new MapperBuilder<S>(mapperOptions,builderType);
     }
 
     /**
@@ -74,20 +93,8 @@ public class MapperBuilder <S> {
      *
      * @return
      */
-    public static <S> MapperBuilder<S> createBuilder(S objectToSet){
-        return new MapperBuilder<S>().setObjectToSet(objectToSet);
-    }
-
-    /**
-     * Create new instance of {@link MapperBuilder}
-     *
-     * @param mapperOptions - options of builder
-     * @param objectToSet - object use for applying of setter functions
-     *
-     * @return
-     */
-    public static <S> MapperBuilder createBuilder(MapperOptions mapperOptions, S objectToSet){
-        return new MapperBuilder<S>(mapperOptions).setObjectToSet(objectToSet);
+    public static <S> MapperBuilder<S> createBuilder(Class<S> builderType, S objectToSet){
+        return new MapperBuilder<S>(objectToSet,builderType);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -183,8 +190,9 @@ public class MapperBuilder <S> {
     /**
      * Method call to process all function added into builder. The method are processing in order its were add into builder.
      */
-    public void apply(){
+    public S apply(){
         applyWhitCondition(true,processingFunctions.iterator());
+        return objectToSet;
     }
 
     /**
@@ -221,18 +229,6 @@ public class MapperBuilder <S> {
                 applyWhitCondition(conditionEvaluationValue, functionIterator);
             }
         }
-    }
-
-    /**
-     * set {@link MapperBuilder#objectToSet}
-     *
-     * @param objectToSet
-     *
-     * @return this instance of {@link MapperBuilder}
-     */
-    protected MapperBuilder<S> setObjectToSet(S objectToSet){
-        this.objectToSet = objectToSet;
-        return this;
     }
 
     /**
@@ -275,11 +271,17 @@ public class MapperBuilder <S> {
             this.valueToSet = valueToSet;
         }
 
-        public void process(){
+        /**
+         * invoke setter function and return object to set
+         *
+         * @return - instance of object of type {@code S}
+         */
+        public S process(){
             if(objectToSet==null){
                 throw createNewNullError("The object is null");
             }
             setterFunction.accept(objectToSet,valueToSet);
+            return objectToSet;
         }
     }
 
@@ -334,20 +336,7 @@ public class MapperBuilder <S> {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-    private static MapperBuilder<SimplePojo> SIMPLE_POJO_MAPPER =
-            MapperBuilder.createBuilder(SimplePojo.class);
-
-    private static BiConsumer<SimplePojo,SimplePojo> SIMPLE_POJO_MAPPER_2 = (SimplePojo objectToSet, SimplePojo objectToGet) -> {
+    /*private static BiConsumer<SimplePojo,SimplePojo> SIMPLE_POJO_MAPPER_2 = (SimplePojo objectToSet, SimplePojo objectToGet) -> {
         MapperBuilder.createBuilder(objectToSet)
                 .withSetter(SimplePojo::setParam1,"a")
                 .withSetter(SimplePojo::setParam2,"b")
@@ -359,28 +348,5 @@ public class MapperBuilder <S> {
                 .whitEndCondition()
                 .withSetter(objectToSet,SimplePojo::setParam2,"b")
                 .apply();
-    };
-
-    public static void main(String [] args){
-
-        SimplePojo simplePojo = new SimplePojo();
-        SimplePojo simplePojo2 = new SimplePojo();
-        simplePojo2.setParam2("b");
-        Function<SimplePojo, String> f = SimplePojo::getParam1;
-        //GetterFunction<Object,String> f2 = SimplePojo::getParam1;
-
-        SIMPLE_POJO_MAPPER_2.accept(simplePojo,simplePojo2);
-
-       /* SIMPLE_POJO_MAPPER
-                .whitDirectValue(simplePojo,SimplePojo::setParam1,"a")
-                .whitDirectValue(simplePojo,SimplePojo::setParam2,"b")
-                .whitStartCondition(() -> "a".equals("a"))
-                    .whitStartCondition(() -> "d".equals("x"))
-                        .whitDirectValue(simplePojo,SimplePojo::setParam1,"c")
-                    .whitEndCondition()
-                    .whitDirectValue(simplePojo,SimplePojo::setParam2,"d")
-                .whitEndCondition()
-                .apply();*/
-        System.out.println(simplePojo);
-    }
+    };*/
 }

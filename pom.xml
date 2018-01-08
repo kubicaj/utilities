@@ -15,6 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <dependency.version.junit>4.8.2</dependency.version.junit>
+        <dependency.version.common.lang>2.6</dependency.version.common.lang>
     </properties>
 
     <modules>
@@ -24,10 +25,17 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${dependency.version.junit}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${dependency.version.common.lang}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

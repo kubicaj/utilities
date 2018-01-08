@@ -34,7 +34,58 @@ public class MapperOptions {
      */
     private boolean autoThrowCustomErrorIfNull = true;
 
+    /**
+     * prefix of field which will be used for finding of getter method of source object
+     * The prefix character is case sensitive
+     *
+     * Sample:
+     * base field name = firstName
+     * If prefix is set to <i>El</i> then the getter method <i>getElFirstName</i> will be finding in source object
+     *
+     * Default:
+     * Empty value
+     */
+    private String sourceObjectFieldPrefix = "";
 
+    /**
+     * suffix of field which will be used for finding of getter method of source object
+     * The suffix character is case sensitive
+     *
+     * Sample:
+     * base field name = firstName
+     * If suffix is set to <i>El</i> then the getter method <i>getFirstNameEl</i> will be finding in source object
+     * Default:
+     * Empty value
+     */
+    private String sourceObjectFieldSuffix = "";
+
+    /**
+     * prefix of field which will be used for parsing of base filedName.
+     * The prefix character is case sensitive
+     *
+     * Sample:
+     * field name = elFirstName
+     * If prefix is set to <i>el</i> then the base field name will parse as <i>firstName</i>.
+     * Then the getter with name <i>getFirstName</i> will be finding in source object.
+     *
+     * Default:
+     * Empty value
+     */
+    private String destinationObjectFieldPrefix = "";
+
+    /**
+     * suffix of field which will be used for parsing of base filedName.
+     * The suffix character is case sensitive
+     *
+     * Sample:
+     * field name = firstNameEl
+     * If prefix is set to <i>El</i> then the base field name will parse as <i>firstName</i>.
+     * Then the getter with name <i>getFirstName</i> will be finding in source object.
+     *
+     * Default:
+     * Empty value
+     */
+    private String destinationObjectFieldSuffixe = "";
 
     // -----------------------------------------------------------------------------------------------------------------
     // GETTERS AND SETTERS
@@ -89,6 +140,67 @@ public class MapperOptions {
      */
     public MapperOptions setAutoThrowCustomErrorIfNull(boolean autoThrowCustomErrorIfNull) {
         this.autoThrowCustomErrorIfNull = autoThrowCustomErrorIfNull;
+        return this;
+    }
+
+    public String getSourceObjectFieldPrefix() {
+        return sourceObjectFieldPrefix;
+    }
+
+    /**
+     * set option {@link MapperOptions#sourceObjectFieldPrefix}
+     *
+     * @param sourceObjectFieldPrefix
+     * @return this instance
+     */
+    public MapperOptions setSourceObjectFieldPrefix(String sourceObjectFieldPrefix) {
+        this.sourceObjectFieldPrefix = sourceObjectFieldPrefix;
+        return this;
+    }
+
+    public String getSourceObjectFieldSuffix() {
+        return sourceObjectFieldSuffix;
+    }
+
+    /**
+     * set option {@link MapperOptions#sourceObjectFieldPrefix}
+     *
+     * @param sourceObjectFieldSuffix
+     * @return this instance
+     */
+    public MapperOptions setSourceObjectFieldSuffix(String sourceObjectFieldSuffix) {
+        this.sourceObjectFieldSuffix = sourceObjectFieldSuffix;
+        return this;
+    }
+
+    public String getDestinationObjectFieldPrefix() {
+        return destinationObjectFieldPrefix;
+    }
+
+    /**
+     * set option {@link MapperOptions#destinationObjectFieldPrefix}
+     *
+     * @param destinationObjectFieldPrefix
+     * @return this instance
+     */
+    public MapperOptions setDestinationObjectFieldPrefix(String destinationObjectFieldPrefix) {
+        this.destinationObjectFieldPrefix = destinationObjectFieldPrefix;
+        return this;
+    }
+
+    public String getDestinationObjectFieldSuffixe() {
+        return destinationObjectFieldSuffixe;
+    }
+
+
+    /**
+     * set option {@link MapperOptions#destinationObjectFieldSuffixe}
+     *
+     * @param destinationObjectFieldSuffixe
+     * @return this instance
+     */
+    public MapperOptions setDestinationObjectFieldSuffixe(String destinationObjectFieldSuffixe) {
+        this.destinationObjectFieldSuffixe = destinationObjectFieldSuffixe;
         return this;
     }
 }

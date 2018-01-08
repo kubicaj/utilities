@@ -6,6 +6,8 @@ public class SimplePojoTest2 {
     private Integer intParam2;
     private String strParam1;
     private String strParam2;
+    private boolean boolParam1;
+    private Boolean boolParam2;
 
     public int getIntParam1() {
         return intParam1;
@@ -37,5 +39,21 @@ public class SimplePojoTest2 {
 
     public void setStrParam2(String strParam2) {
         this.strParam2 = strParam2;
+    }
+
+    public boolean isBoolParam1() {
+        return boolParam1;
+    }
+
+    public void setBoolParam1(boolean boolParam1) {
+        this.boolParam1 = boolParam1;
+    }
+
+    public Boolean getBoolParam2() {
+        return boolParam2;
+    }
+
+    public void setBoolParam2(Boolean boolParam2) {
+        this.boolParam2 = boolParam2;
     }
 }

@@ -1,10 +1,10 @@
-package com.kubicaj.mapper;
+package com.kubicaj.utilities.mapper;
 
-import com.kubicaj.mapper.function.ConditionFunction;
-import com.kubicaj.mapper.function.GetterFunction;
-import com.kubicaj.mapper.function.ProcessingFunction;
-import com.kubicaj.mapper.function.SetterFunction;
-import com.kubicaj.mapper.options.MapperOptions;
+import com.kubicaj.utilities.mapper.function.ConditionFunction;
+import com.kubicaj.utilities.mapper.function.GetterFunction;
+import com.kubicaj.utilities.mapper.function.ProcessingFunction;
+import com.kubicaj.utilities.mapper.function.SetterFunction;
+import com.kubicaj.utilities.mapper.options.MapperOptions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -258,7 +258,7 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * @param <S> the type of value which is set into object {@link SetterRepresentation#objectToSet} within function
      * {@link SetterRepresentation#setterFunction}
      */
-    private class SetterRepresentation<S> implements ProcessingFunction{
+    private class SetterRepresentation<S> implements ProcessingFunction {
         private R objectToSet;
         private SetterFunction<R,S> setterFunction;
         private S valueToSet;

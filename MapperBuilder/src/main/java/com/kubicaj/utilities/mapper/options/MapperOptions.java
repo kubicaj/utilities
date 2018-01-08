@@ -1,6 +1,6 @@
-package com.kubicaj.mapper.options;
+package com.kubicaj.utilities.mapper.options;
 
-import com.kubicaj.mapper.exception.MapperException;
+import com.kubicaj.utilities.mapper.exception.MapperException;
 
 /**
  * Class represented options for mapping object

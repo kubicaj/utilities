@@ -1,6 +1,6 @@
-package com.kubicaj.mapper.reflection;
+package com.kubicaj.utilities.mapper.reflection;
 
-import com.kubicaj.mapper.exception.MapperException;
+import com.kubicaj.utilities.mapper.exception.MapperException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

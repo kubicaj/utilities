@@ -1,6 +1,6 @@
-package com.kubicaj.mapper.function;
+package com.kubicaj.utilities.mapper.function;
 
-import com.kubicaj.mapper.MapperBuilder;
+import com.kubicaj.utilities.mapper.MapperBuilder;
 
 /**
  * The common type of all {@link FunctionalInterface} uses in {@link MapperBuilder}

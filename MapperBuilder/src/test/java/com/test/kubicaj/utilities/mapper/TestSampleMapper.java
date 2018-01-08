@@ -1,13 +1,13 @@
-package com.test.kubicaj.mapper;
+package com.test.kubicaj.utilities.mapper;
 
-import com.kubicaj.mapper.MapperBuilder;
-import com.kubicaj.mapper.ReflectionMapperBuilder;
-import com.kubicaj.mapper.function.ConditionFunction;
-import com.kubicaj.mapper.options.MapperOptions;
-import com.test.kubicaj.mapper.pojoObjects.SimplePojoTest1;
-import com.test.kubicaj.mapper.pojoObjects.SimplePojoTest2;
-import com.test.kubicaj.mapper.pojoObjects.SimplePojoTestWitPrefix;
-import com.test.kubicaj.mapper.pojoObjects.SimplePojoTestWithPrefixAndSuffix;
+import com.kubicaj.utilities.mapper.MapperBuilder;
+import com.kubicaj.utilities.mapper.ReflectionMapperBuilder;
+import com.kubicaj.utilities.mapper.function.ConditionFunction;
+import com.kubicaj.utilities.mapper.options.MapperOptions;
+import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTest1;
+import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTest2;
+import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTestWitPrefix;
+import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTestWithPrefixAndSuffix;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.kubicaj.mapper.exception;
+package com.kubicaj.utilities.mapper.exception;
 
 public class MapperException extends RuntimeException {
 

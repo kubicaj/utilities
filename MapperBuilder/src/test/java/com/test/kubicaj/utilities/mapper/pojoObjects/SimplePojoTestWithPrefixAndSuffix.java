@@ -1,4 +1,4 @@
-package com.test.kubicaj.mapper.pojoObjects;
+package com.test.kubicaj.utilities.mapper.pojoObjects;
 
 public class SimplePojoTestWithPrefixAndSuffix {
 

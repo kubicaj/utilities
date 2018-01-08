@@ -1,15 +1,12 @@
-package com.kubicaj.mapper;
+package com.kubicaj.utilities.mapper;
 
-import com.kubicaj.mapper.options.MapperOptions;
-import com.kubicaj.mapper.reflection.ReflectionUtils;
+import com.kubicaj.utilities.mapper.options.MapperOptions;
+import com.kubicaj.utilities.mapper.reflection.ReflectionUtils;
 import org.apache.commons.lang.WordUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.List;
-
-import static com.kubicaj.mapper.reflection.ReflectionUtils.getDeclarativeFields;
 
 /**
  * @param <R> - type of destination object

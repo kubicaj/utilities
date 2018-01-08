@@ -4,9 +4,8 @@ import com.kubicaj.utilities.mapper.exception.MapperException;
 
 /**
  * Class represented options for mapping object
- *
+ * <p>
  * It include options for behaving in case of error, reflection options,...
- *
  */
 public class MapperOptions {
 
@@ -37,11 +36,11 @@ public class MapperOptions {
     /**
      * prefix of field which will be used for finding of getter method of source object
      * The prefix character is case sensitive
-     *
+     * <p>
      * Sample:
      * base field name = firstName
      * If prefix is set to <i>El</i> then the getter method <i>getElFirstName</i> will be finding in source object
-     *
+     * <p>
      * Default:
      * Empty value
      */
@@ -50,7 +49,7 @@ public class MapperOptions {
     /**
      * suffix of field which will be used for finding of getter method of source object
      * The suffix character is case sensitive
-     *
+     * <p>
      * Sample:
      * base field name = firstName
      * If suffix is set to <i>El</i> then the getter method <i>getFirstNameEl</i> will be finding in source object
@@ -62,12 +61,12 @@ public class MapperOptions {
     /**
      * prefix of field which will be used for parsing of base filedName.
      * The prefix character is case sensitive
-     *
+     * <p>
      * Sample:
      * field name = elFirstName
      * If prefix is set to <i>el</i> then the base field name will parse as <i>firstName</i>.
      * Then the getter with name <i>getFirstName</i> will be finding in source object.
-     *
+     * <p>
      * Default:
      * Empty value
      */
@@ -76,12 +75,12 @@ public class MapperOptions {
     /**
      * suffix of field which will be used for parsing of base filedName.
      * The suffix character is case sensitive
-     *
+     * <p>
      * Sample:
      * field name = firstNameEl
      * If prefix is set to <i>El</i> then the base field name will parse as <i>firstName</i>.
      * Then the getter with name <i>getFirstName</i> will be finding in source object.
-     *
+     * <p>
      * Default:
      * Empty value
      */
@@ -92,7 +91,7 @@ public class MapperOptions {
     // -----------------------------------------------------------------------------------------------------------------
 
     public Class<? extends RuntimeException> getNullErrorExceptionType() {
-        if(nullErrorExceptionType==null){
+        if (nullErrorExceptionType == null) {
             try {
                 nullErrorExceptionType = (Class<MapperException>) Class.forName(MapperException.class.getName());
             } catch (ClassNotFoundException e) {

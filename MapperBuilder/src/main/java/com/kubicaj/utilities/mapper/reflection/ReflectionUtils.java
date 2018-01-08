@@ -36,7 +36,6 @@ public class ReflectionUtils {
      * @param object     - object for who the method is invoking
      * @param args       - method arguments
      * @param <T>        - type of object
-     *
      * @return - result of method
      */
     public static <T> Object invokeMethod(Class<T> classType, String methodName, T object, Object... args) {
@@ -58,7 +57,6 @@ public class ReflectionUtils {
      * @param method
      * @param object
      * @param args
-     *
      * @return - result of method
      */
     public static Object invokeMethod(Method method, Object object, Object... args) {
@@ -108,14 +106,14 @@ public class ReflectionUtils {
         Map<String, Method> classMethodsStack = methodStaticCache.get(classType.getName());
         if (classMethodsStack == null) {
             classMethodsStack = new HashMap<>();
-            methodStaticCache.put(classType.getName(),classMethodsStack);
+            methodStaticCache.put(classType.getName(), classMethodsStack);
         }
         // try to find method in cache. If not exists then find in in class definition and add it to cache
         Method methodToInvoke = classMethodsStack.get(methodName);
         if (methodToInvoke == null) {
             try {
                 methodToInvoke = classType.getMethod(methodName, parameterTypes);
-                classMethodsStack.put(methodName,methodToInvoke);
+                classMethodsStack.put(methodName, methodToInvoke);
             } catch (NoSuchMethodException e) {
                 return null;
             }

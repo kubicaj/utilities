@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @param <R> - type of object which is creating in builder
  */
-public class MapperBuilder <R> implements IMapperBuilder{
+public class MapperBuilder<R> implements IMapperBuilder {
 
     // -----------------------------------------------------------------------------------------------------------------
     // ATTRIBUTES
@@ -37,21 +37,21 @@ public class MapperBuilder <R> implements IMapperBuilder{
             this.destinationObjectType = destinationObjectType;
             this.destinationObject = destinationObjectType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException("Not able to create Builder",e);
+            throw new RuntimeException("Not able to create Builder", e);
         }
     }
 
-    protected MapperBuilder(Class<R> destinationObjectType){
-        try{
+    protected MapperBuilder(Class<R> destinationObjectType) {
+        try {
             this.mapperOptions = new MapperOptions();
             this.destinationObjectType = destinationObjectType;
             this.destinationObject = destinationObjectType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException("Not able to create Builder",e);
+            throw new RuntimeException("Not able to create Builder", e);
         }
     }
 
-    protected MapperBuilder(R destinationObject, Class<R> destinationObjectType){
+    protected MapperBuilder(R destinationObject, Class<R> destinationObjectType) {
         this.mapperOptions = new MapperOptions();
         this.destinationObjectType = destinationObjectType;
         this.destinationObject = destinationObject;
@@ -65,10 +65,9 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * Create new instance of {@link MapperBuilder}
      *
      * @param builderType - type of builder
-     *
      * @return
      */
-    public static <R> MapperBuilder<R> createBuilder(Class<R> builderType){
+    public static <R> MapperBuilder<R> createBuilder(Class<R> builderType) {
         return new MapperBuilder<R>(builderType);
     }
 
@@ -76,11 +75,10 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * Create new instance of {@link MapperBuilder}
      *
      * @param objectToSet - object use for applying of setter functions
-     *
      * @return
      */
-    public static <R> MapperBuilder<R> createBuilder(Class<R> builderType, R objectToSet){
-        return new MapperBuilder<R>(objectToSet,builderType);
+    public static <R> MapperBuilder<R> createBuilder(Class<R> builderType, R objectToSet) {
+        return new MapperBuilder<R>(objectToSet, builderType);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -91,8 +89,8 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * @see IMapperBuilder#apply()
      */
     @Override
-    public R apply(){
-        applyWhitCondition(true,processingFunctions.iterator());
+    public R apply() {
+        applyWhitCondition(true, processingFunctions.iterator());
         return destinationObject;
     }
 
@@ -112,32 +110,30 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * add processing of {@code setterFunction} method of object {@code objectToSet} with input parameter value
      * as return from {@code getterFunction} function of object {@code objectToGet}
      *
-     * @param objectToSet - object for which we are setting a value
+     * @param objectToSet    - object for which we are setting a value
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
-     * @param objectToGet - object from which we are getting a value
+     * @param objectToGet    - object from which we are getting a value
      * @param getterFunction - function which is call on {@code objectToGet} to gain a value to {@code setterFunction}
-     * @param <S> - type of value which is set into {@code objectToSet}
-     * @param <G> - type of value {@code objectToGet}
-     *
+     * @param <S>            - type of value which is set into {@code objectToSet}
+     * @param <G>            - type of value {@code objectToGet}
      * @return this instance of {@link MapperBuilder}
      */
-    public <S,G> MapperBuilder<R> withSetter(R objectToSet, SetterFunction<R,S> setterFunction, G objectToGet, GetterFunction<G,S> getterFunction){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(objectToSet,setterFunction,getterFunction.apply(objectToGet))));
+    public <S, G> MapperBuilder<R> withSetter(R objectToSet, SetterFunction<R, S> setterFunction, G objectToGet, GetterFunction<G, S> getterFunction) {
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(objectToSet, setterFunction, getterFunction.apply(objectToGet))));
         return this;
     }
 
     /**
      * add processing of {@code setterFunction} method of object {@code objectToSet} with input parameter as {@code valueToSet}
      *
-     * @param objectToSet - object for which we are setting a value
+     * @param objectToSet    - object for which we are setting a value
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
-     * @param valueToSet - input parameter into method {@code setterFunction}
-     * @param <S> - type of value which is set into {@code objectToSet}
-     *
+     * @param valueToSet     - input parameter into method {@code setterFunction}
+     * @param <S>            - type of value which is set into {@code objectToSet}
      * @return this instance of {@link MapperBuilder}
      */
-    public <S> MapperBuilder<R> withSetter(R objectToSet, SetterFunction<R,S> setterFunction, S valueToSet){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(objectToSet,setterFunction,valueToSet)));
+    public <S> MapperBuilder<R> withSetter(R objectToSet, SetterFunction<R, S> setterFunction, S valueToSet) {
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(objectToSet, setterFunction, valueToSet)));
         return this;
     }
 
@@ -146,15 +142,14 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * as return from {@code getterFunction} function of object {@code objectToGet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
-     * @param objectToGet - object from which we are getting a value
+     * @param objectToGet    - object from which we are getting a value
      * @param getterFunction - function which is call on {@code objectToGet} to gain a value to {@code setterFunction}
-     * @param <S> - type of value which is set into {@code objectToSet}
-     * @param <G> - type of value {@code objectToGet}
-     *
+     * @param <S>            - type of value which is set into {@code objectToSet}
+     * @param <G>            - type of value {@code objectToGet}
      * @return this instance of {@link MapperBuilder}
      */
-    public <S,G> MapperBuilder<R> withSetter(SetterFunction<R,S> setterFunction, G objectToGet, GetterFunction<G,S> getterFunction){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject,setterFunction,getterFunction.apply(objectToGet))));
+    public <S, G> MapperBuilder<R> withSetter(SetterFunction<R, S> setterFunction, G objectToGet, GetterFunction<G, S> getterFunction) {
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject, setterFunction, getterFunction.apply(objectToGet))));
         return this;
     }
 
@@ -162,13 +157,12 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * add processing of {@code setterFunction} method of object {@link this#destinationObject} with input parameter as {@code valueToSet}
      *
      * @param setterFunction - function which is call for setting of exact value of object {@code objectToSet}
-     * @param valueToSet - input parameter into method {@code setterFunction}
-     * @param <S> - type of value which is set into {@code objectToSet}
-     *
+     * @param valueToSet     - input parameter into method {@code setterFunction}
+     * @param <S>            - type of value which is set into {@code objectToSet}
      * @return this instance of {@link MapperBuilder}
      */
-    public <S> MapperBuilder<R> withSetter(SetterFunction<R,S> setterFunction, S valueToSet){
-        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject,setterFunction,valueToSet)));
+    public <S> MapperBuilder<R> withSetter(SetterFunction<R, S> setterFunction, S valueToSet) {
+        processingFunctions.add(FunctionWrapper.ofFunctionWrap(new SetterRepresentation(this.destinationObject, setterFunction, valueToSet)));
         return this;
     }
 
@@ -176,10 +170,9 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * start processing with condition. Condition is evaluated according {@code conditionFunction}
      *
      * @param conditionFunction
-     *
      * @return this instance of {@link MapperBuilder}
      */
-    public MapperBuilder<R> whitStartCondition(ConditionFunction conditionFunction){
+    public MapperBuilder<R> whitStartCondition(ConditionFunction conditionFunction) {
         processingFunctions.add(FunctionWrapper.ofFunctionWrap(conditionFunction));
         return this;
     }
@@ -189,7 +182,7 @@ public class MapperBuilder <R> implements IMapperBuilder{
      *
      * @return this instance of {@link MapperBuilder}
      */
-    public MapperBuilder<R> whitEndCondition(){
+    public MapperBuilder<R> whitEndCondition() {
         processingFunctions.add(FunctionWrapper.ofEndCondition());
         return this;
     }
@@ -199,19 +192,19 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * It is call in {@link MapperBuilder#apply()} as recursive processing of builder
      *
      * @param conditionEvaluationValue - evaluated condition - if false then processing of several function may be skip
-     * @param functionIterator - the stack of function to process
+     * @param functionIterator         - the stack of function to process
      */
-    private void applyWhitCondition(boolean conditionEvaluationValue,Iterator<FunctionWrapper> functionIterator){
+    private void applyWhitCondition(boolean conditionEvaluationValue, Iterator<FunctionWrapper> functionIterator) {
         // if there are no more function then end
-        if(!functionIterator.hasNext()){
+        if (!functionIterator.hasNext()) {
             return;
         }
         // get next function
         FunctionWrapper nextFunctionWrapper = functionIterator.next();
-        if(!conditionEvaluationValue){
+        if (!conditionEvaluationValue) {
             // check if end condition is in order to process
-            if(nextFunctionWrapper.isEndCondition()){
-                applyWhitCondition(true,functionIterator);
+            if (nextFunctionWrapper.isEndCondition()) {
+                applyWhitCondition(true, functionIterator);
             } else {
                 applyWhitCondition(conditionEvaluationValue, functionIterator);
             }
@@ -233,11 +226,10 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * Create error according {@link MapperBuilder#mapperOptions}
      *
      * @param errorMessage - text for error message
-     *
      * @return {@link RuntimeException} error instance
      */
     protected RuntimeException createNewNullError(String errorMessage) {
-        if(errorMessage==null || errorMessage.isEmpty()){
+        if (errorMessage == null || errorMessage.isEmpty()) {
             errorMessage = mapperOptions.getErrorMessage();
         }
         try {
@@ -256,11 +248,11 @@ public class MapperBuilder <R> implements IMapperBuilder{
      * Setter representation of current value
      *
      * @param <S> the type of value which is set into object {@link SetterRepresentation#objectToSet} within function
-     * {@link SetterRepresentation#setterFunction}
+     *            {@link SetterRepresentation#setterFunction}
      */
     private class SetterRepresentation<S> implements ProcessingFunction {
         private R objectToSet;
-        private SetterFunction<R,S> setterFunction;
+        private SetterFunction<R, S> setterFunction;
         private S valueToSet;
 
         public SetterRepresentation(R objectToSet, SetterFunction<R, S> setterFunction, S valueToSet) {
@@ -274,11 +266,11 @@ public class MapperBuilder <R> implements IMapperBuilder{
          *
          * @return - instance of object of type {@code S}
          */
-        public R process(){
-            if(objectToSet==null){
+        public R process() {
+            if (objectToSet == null) {
                 throw createNewNullError("The object is null");
             }
-            setterFunction.accept(objectToSet,valueToSet);
+            setterFunction.accept(objectToSet, valueToSet);
             return objectToSet;
         }
     }
@@ -309,12 +301,12 @@ public class MapperBuilder <R> implements IMapperBuilder{
             return isEndCondition;
         }
 
-        public boolean isConditionFunction(){
-            return processingFunction!=null && processingFunction instanceof ConditionFunction;
+        public boolean isConditionFunction() {
+            return processingFunction != null && processingFunction instanceof ConditionFunction;
         }
 
-        public boolean isSetterRepresentation(){
-            return processingFunction!=null && processingFunction instanceof MapperBuilder.SetterRepresentation;
+        public boolean isSetterRepresentation() {
+            return processingFunction != null && processingFunction instanceof MapperBuilder.SetterRepresentation;
         }
 
         public ProcessingFunction getProcessingFunction() {
@@ -327,15 +319,16 @@ public class MapperBuilder <R> implements IMapperBuilder{
          * @param processingFunction
          * @return
          */
-        public static FunctionWrapper ofFunctionWrap(ProcessingFunction processingFunction){
+        public static FunctionWrapper ofFunctionWrap(ProcessingFunction processingFunction) {
             return new FunctionWrapper(processingFunction);
         }
 
         /**
          * create new function wrapper represented the ending of condition
+         *
          * @return
          */
-        public static FunctionWrapper ofEndCondition(){
+        public static FunctionWrapper ofEndCondition() {
             return new FunctionWrapper(true);
         }
     }

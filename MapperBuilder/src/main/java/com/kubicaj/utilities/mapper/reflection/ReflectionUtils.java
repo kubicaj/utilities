@@ -28,30 +28,6 @@ public class ReflectionUtils {
     private static Map<String, Map<String, Field>> classFieldsStaticCache = new HashMap<>();
 
     /**
-     * invoke {@link Method} according parameters. In the method the definition of method is searching in cache at first.
-     * If there is not particular record in the cache, then the method is find in class definition following by saving to cache
-     *
-     * @param classType  - type of object {@code object}
-     * @param methodName - name of method
-     * @param object     - object for who the method is invoking
-     * @param args       - method arguments
-     * @param <T>        - type of object
-     * @return - result of method
-     */
-    public static <T> Object invokeMethod(Class<T> classType, String methodName, T object, Object... args) {
-        Method methodToInvoke = findMethodByName(classType, methodName);
-        if (methodToInvoke == null) {
-            throw new MapperException(String.format("There is not method with name %s for class %s", methodName, classType.getName()));
-        }
-        findMethodByName(classType, methodName);
-        try {
-            return methodToInvoke.invoke(object, args);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new MapperException(String.format("The error occur when invoke method with name %s for class %s", methodName, classType.getName()), e);
-        }
-    }
-
-    /**
      * invoke method
      *
      * @param method

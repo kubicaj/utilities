@@ -42,12 +42,41 @@ public class ReflectionMapperBuilder<R, S> extends MapperBuilder<R> {
     /**
      * new instance of {@link ReflectionMapperBuilder}
      *
+     * @param mapperOptions
+     * @param sourceObject
+     * @param sourceObjectType
+     * @param destinationObject
+     * @param destinationObjectType
+     */
+    protected ReflectionMapperBuilder(MapperOptions mapperOptions, S sourceObject, Class<S> sourceObjectType, R destinationObject, Class<R> destinationObjectType) {
+        super(mapperOptions, destinationObject, destinationObjectType);
+        this.sourceObjectType = sourceObjectType;
+        this.sourceObject = sourceObject;
+    }
+
+    /**
+     * new instance of {@link ReflectionMapperBuilder}
+     *
      * @param sourceObject
      * @param sourceObjectType
      * @param destinationObjectType
      */
     protected ReflectionMapperBuilder(S sourceObject, Class<S> sourceObjectType, Class<R> destinationObjectType) {
         super(destinationObjectType);
+        this.sourceObjectType = sourceObjectType;
+        this.sourceObject = sourceObject;
+    }
+
+    /**
+     * new instance of {@link ReflectionMapperBuilder}
+     *
+     * @param sourceObject
+     * @param sourceObjectType
+     * @param destinationObject - object of type <R> where the values will be set
+     * @param destinationObjectType
+     */
+    protected ReflectionMapperBuilder(S sourceObject, Class<S> sourceObjectType, R destinationObject, Class<R> destinationObjectType) {
+        super(destinationObject,destinationObjectType);
         this.sourceObjectType = sourceObjectType;
         this.sourceObject = sourceObject;
     }
@@ -74,6 +103,32 @@ public class ReflectionMapperBuilder<R, S> extends MapperBuilder<R> {
      */
     public static <R, S> ReflectionMapperBuilder<R, S> createReflectionBuilder(S sourceObject, Class<S> sourceObjectType, Class<R> destinationObjectType, MapperOptions mapperOptions) {
         return new ReflectionMapperBuilder<R, S>(mapperOptions, sourceObject, sourceObjectType, destinationObjectType);
+    }
+
+    /**
+     * Create new instance of {@link ReflectionMapperBuilder}
+     *
+     * @param sourceObject
+     * @param sourceObjectType
+     * @param destinationObject
+     * @param destinationObjectType
+     * @return
+     */
+    public static <R, S> ReflectionMapperBuilder<R, S> createReflectionBuilder(S sourceObject, Class<S> sourceObjectType, R destinationObject, Class<R> destinationObjectType) {
+        return new ReflectionMapperBuilder<R, S>(sourceObject, sourceObjectType, destinationObject, destinationObjectType);
+    }
+
+    /**
+     * Create new instance of {@link ReflectionMapperBuilder}
+     *
+     * @param sourceObject
+     * @param sourceObjectType
+     * @param destinationObject
+     * @param destinationObjectType
+     * @return
+     */
+    public static <R, S> ReflectionMapperBuilder<R, S> createReflectionBuilder(S sourceObject, Class<S> sourceObjectType, R destinationObject, Class<R> destinationObjectType, MapperOptions mapperOptions) {
+        return new ReflectionMapperBuilder<R, S>(mapperOptions, sourceObject, sourceObjectType, destinationObject, destinationObjectType);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

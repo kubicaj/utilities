@@ -79,6 +79,14 @@ This example show us simple reflection mapping. There is mapping from pojo Simpl
     .apply();
 ```
 
+This example show us simple reflection mapping whit reference object passing. There is mapping from pojo SimplePojoTest into SimplePojoTest2
+```
+  SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
+  simplePojoTest2 = ReflectionMapperBuilder
+    .createReflectionBuilder(testSimplePojoTest1,SimplePojoTest1.class,simplePojoTest2,SimplePojoTest2.class)
+    .apply();
+```
+
 This example show us reflection mapping with setting of prefixies of destination and source class. There you see sample of additional mapping with reflection
 ```
   SimplePojoTestWithPrefixAndSuffix result = ReflectionMapperBuilder

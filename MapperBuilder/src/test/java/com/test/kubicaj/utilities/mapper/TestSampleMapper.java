@@ -174,6 +174,27 @@ public class TestSampleMapper {
     }
 
     /**
+     * test simple reflection mapping
+     */
+    @Test
+    public void testReflectionSimpleMappingWithDestinationReferencePassing(){
+        SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
+        ReflectionMapperBuilder
+                .createReflectionBuilder(
+                        testSimplePojoTest1,
+                        SimplePojoTest1.class,
+                        simplePojoTest2,
+                        SimplePojoTest2.class)
+                .apply();
+        // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTest1
+        Assert.assertEquals(simplePojoTest2.getIntParam1(), testSimplePojoTest1.getIntParam1());
+        Assert.assertEquals(simplePojoTest2.getIntParam2(), testSimplePojoTest1.getIntParam2());
+        Assert.assertEquals(simplePojoTest2.getStrParam1(), testSimplePojoTest1.getStrParam1());
+        Assert.assertEquals(simplePojoTest2.getStrParam2(), testSimplePojoTest1.getStrParam2());
+    }
+
+
+    /**
      * test reflection mapping with prefixes and suffixes
      */
     @Test

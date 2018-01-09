@@ -41,6 +41,12 @@ public class MapperBuilder<R> implements IMapperBuilder {
         }
     }
 
+    protected MapperBuilder(MapperOptions mapperOptions, R destinationObject, Class<R> destinationObjectType) {
+        this.mapperOptions = mapperOptions;
+        this.destinationObjectType = destinationObjectType;
+        this.destinationObject = destinationObject;
+    }
+
     protected MapperBuilder(Class<R> destinationObjectType) {
         try {
             this.mapperOptions = new MapperOptions();

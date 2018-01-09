@@ -90,7 +90,7 @@ public class MapperBuilder<R> implements IMapperBuilder {
      */
     @Override
     public R apply() {
-        applyWhitCondition(true, processingFunctions.iterator());
+        applyWithCondition(true, processingFunctions.iterator());
         return destinationObject;
     }
 
@@ -172,7 +172,7 @@ public class MapperBuilder<R> implements IMapperBuilder {
      * @param conditionFunction
      * @return this instance of {@link MapperBuilder}
      */
-    public MapperBuilder<R> whitStartCondition(ConditionFunction conditionFunction) {
+    public MapperBuilder<R> withStartCondition(ConditionFunction conditionFunction) {
         processingFunctions.add(FunctionWrapper.ofFunctionWrap(conditionFunction));
         return this;
     }
@@ -182,7 +182,7 @@ public class MapperBuilder<R> implements IMapperBuilder {
      *
      * @return this instance of {@link MapperBuilder}
      */
-    public MapperBuilder<R> whitEndCondition() {
+    public MapperBuilder<R> withEndCondition() {
         processingFunctions.add(FunctionWrapper.ofEndCondition());
         return this;
     }
@@ -194,7 +194,7 @@ public class MapperBuilder<R> implements IMapperBuilder {
      * @param conditionEvaluationValue - evaluated condition - if false then processing of several function may be skip
      * @param functionIterator         - the stack of function to process
      */
-    private void applyWhitCondition(boolean conditionEvaluationValue, Iterator<FunctionWrapper> functionIterator) {
+    private void applyWithCondition(boolean conditionEvaluationValue, Iterator<FunctionWrapper> functionIterator) {
         // if there are no more function then end
         if (!functionIterator.hasNext()) {
             return;
@@ -204,20 +204,20 @@ public class MapperBuilder<R> implements IMapperBuilder {
         if (!conditionEvaluationValue) {
             // check if end condition is in order to process
             if (nextFunctionWrapper.isEndCondition()) {
-                applyWhitCondition(true, functionIterator);
+                applyWithCondition(true, functionIterator);
             } else {
-                applyWhitCondition(conditionEvaluationValue, functionIterator);
+                applyWithCondition(conditionEvaluationValue, functionIterator);
             }
         } else {
             if (nextFunctionWrapper.isSetterRepresentation()) {
                 // in case of SetterRepresentation process setter function and continue processing
                 ((SetterRepresentation) nextFunctionWrapper.getProcessingFunction()).process();
-                applyWhitCondition(conditionEvaluationValue, functionIterator);
+                applyWithCondition(conditionEvaluationValue, functionIterator);
             } else if (nextFunctionWrapper.isConditionFunction()) {
                 // in case of ConditionFunction evaluate condition and continue processing
-                applyWhitCondition(((ConditionFunction) nextFunctionWrapper.getProcessingFunction()).test(), functionIterator);
+                applyWithCondition(((ConditionFunction) nextFunctionWrapper.getProcessingFunction()).test(), functionIterator);
             } else {
-                applyWhitCondition(conditionEvaluationValue, functionIterator);
+                applyWithCondition(conditionEvaluationValue, functionIterator);
             }
         }
     }

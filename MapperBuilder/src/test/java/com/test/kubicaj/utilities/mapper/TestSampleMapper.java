@@ -33,14 +33,14 @@ public class TestSampleMapper {
         testSimplePojoTest1.setBoolParam1(true);
     }
 
-    private static SimplePojoTestWitPrefix testSimplePojoTestWitPrefix1 = new SimplePojoTestWitPrefix();
+    private static SimplePojoTestWitPrefix testSimplePojoTestWithPrefix1 = new SimplePojoTestWitPrefix();
     static {
-        testSimplePojoTestWitPrefix1.setMyPrefixIntParam1(1);
-        testSimplePojoTestWitPrefix1.setMyPrefixIntParam2(2);
-        testSimplePojoTestWitPrefix1.setMyPrefixStrParam1("param1");
-        testSimplePojoTestWitPrefix1.setMyPrefixStrParam2("param2");
-        testSimplePojoTestWitPrefix1.setMyPrefixBoolParam1(true);
-        testSimplePojoTestWitPrefix1.setCustomParameter1("custom1");
+        testSimplePojoTestWithPrefix1.setMyPrefixIntParam1(1);
+        testSimplePojoTestWithPrefix1.setMyPrefixIntParam2(2);
+        testSimplePojoTestWithPrefix1.setMyPrefixStrParam1("param1");
+        testSimplePojoTestWithPrefix1.setMyPrefixStrParam2("param2");
+        testSimplePojoTestWithPrefix1.setMyPrefixBoolParam1(true);
+        testSimplePojoTestWithPrefix1.setCustomParameter1("custom1");
     }
 
     // custom mapper
@@ -54,13 +54,13 @@ public class TestSampleMapper {
     };
 
     // custom mapper whit condition
-    private BiFunction<SimplePojoTest1, ConditionFunction, SimplePojoTest2> MAPPER_SIMPLE_POJO_2_WHIT_CONDITION = (SimplePojoTest1 getterObject, ConditionFunction setStrParam1) -> {
+    private BiFunction<SimplePojoTest1, ConditionFunction, SimplePojoTest2> MAPPER_SIMPLE_POJO_2_WITH_CONDITION = (SimplePojoTest1 getterObject, ConditionFunction setStrParam1) -> {
         return MapperBuilder.createBuilder(SimplePojoTest2.class)
                 .withSetter(SimplePojoTest2::setIntParam1, testSimplePojoTest1, SimplePojoTest1::getIntParam1)
                 .withSetter(SimplePojoTest2::setIntParam2, testSimplePojoTest1, SimplePojoTest1::getIntParam2)
-                .whitStartCondition(setStrParam1)
+                .withStartCondition(setStrParam1)
                     .withSetter(SimplePojoTest2::setStrParam1, testSimplePojoTest1, SimplePojoTest1::getStrParam1)
-                .whitEndCondition()
+                .withEndCondition()
                 .withSetter(SimplePojoTest2::setStrParam2, testSimplePojoTest1, SimplePojoTest1::getStrParam2)
                 .apply();
     };
@@ -145,12 +145,12 @@ public class TestSampleMapper {
     @Test
     public void sampleTestMapperAsFunctionalInterfaceWithCondition(){
         // the condition is false, therefore the strParam1 has to be null
-        SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WHIT_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
+        SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WITH_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
         // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTest1
         Assert.assertEquals(simplePojoTest2.getStrParam1(), null);
 
         // the condition is true, therefore the strParam1 has to be the same as testSimplePojoTest1#getStrParam1
-        SimplePojoTest2 simplePojoTest3 = MAPPER_SIMPLE_POJO_2_WHIT_CONDITION.apply(testSimplePojoTest1,() -> "b".equals("b"));
+        SimplePojoTest2 simplePojoTest3 = MAPPER_SIMPLE_POJO_2_WITH_CONDITION.apply(testSimplePojoTest1,() -> "b".equals("b"));
         // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTest1
         Assert.assertEquals(simplePojoTest3.getStrParam1(), testSimplePojoTest1.getStrParam1());
     }
@@ -180,7 +180,7 @@ public class TestSampleMapper {
     public void testReflectionSimpleMappingWithPrefixesAndSuffixes(){
         SimplePojoTestWithPrefixAndSuffix result = ReflectionMapperBuilder
                 .createReflectionBuilder(
-                        testSimplePojoTestWitPrefix1,
+                        testSimplePojoTestWithPrefix1,
                         SimplePojoTestWitPrefix.class,
                         SimplePojoTestWithPrefixAndSuffix.class,
                         new MapperOptions()
@@ -189,37 +189,37 @@ public class TestSampleMapper {
                                 .setSourceObjectFieldPrefix("myPrefix"))
                 .apply();
 
-        // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTestWitPrefix1
-        Assert.assertEquals(result.getMyPrefixIntParam1MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixIntParam1());
-        Assert.assertEquals(result.getMyPrefixIntParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixIntParam2());
-        Assert.assertEquals(result.getMyPrefixStrParam1MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixStrParam1());
-        Assert.assertEquals(result.getMyPrefixStrParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixStrParam2());
-        Assert.assertEquals(result.getMyPrefixBoolParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixBoolParam2());
-        Assert.assertEquals(result.isMyPrefixBoolParam1MySuffix(), testSimplePojoTestWitPrefix1.isMyPrefixBoolParam1());
+        // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTestWithPrefix1
+        Assert.assertEquals(result.getMyPrefixIntParam1MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixIntParam1());
+        Assert.assertEquals(result.getMyPrefixIntParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixIntParam2());
+        Assert.assertEquals(result.getMyPrefixStrParam1MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixStrParam1());
+        Assert.assertEquals(result.getMyPrefixStrParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixStrParam2());
+        Assert.assertEquals(result.getMyPrefixBoolParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixBoolParam2());
+        Assert.assertEquals(result.isMyPrefixBoolParam1MySuffix(), testSimplePojoTestWithPrefix1.isMyPrefixBoolParam1());
     }
 
     @Test
     public void testReflectionSimpleMappingWithPrefixesAndSuffixesWithAdditionlCustomMapping(){
         SimplePojoTestWithPrefixAndSuffix result = ReflectionMapperBuilder
                 .createReflectionBuilder(
-                        testSimplePojoTestWitPrefix1,
+                        testSimplePojoTestWithPrefix1,
                         SimplePojoTestWitPrefix.class,
                         SimplePojoTestWithPrefixAndSuffix.class,
                         new MapperOptions()
                                 .setDestinationObjectFieldPrefix("myPrefix")
                                 .setDestinationObjectFieldSuffixe("MySuffix")
                                 .setSourceObjectFieldPrefix("myPrefix"))
-                .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2,testSimplePojoTestWitPrefix1.getCustomParameter1())
+                .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2, testSimplePojoTestWithPrefix1.getCustomParameter1())
                 .apply();
 
-        // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTestWitPrefix1
-        Assert.assertEquals(result.getMyPrefixIntParam1MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixIntParam1());
-        Assert.assertEquals(result.getMyPrefixIntParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixIntParam2());
-        Assert.assertEquals(result.getMyPrefixStrParam1MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixStrParam1());
-        Assert.assertEquals(result.getMyPrefixStrParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixStrParam2());
-        Assert.assertEquals(result.getMyPrefixBoolParam2MySuffix(), testSimplePojoTestWitPrefix1.getMyPrefixBoolParam2());
-        Assert.assertEquals(result.isMyPrefixBoolParam1MySuffix(), testSimplePojoTestWitPrefix1.isMyPrefixBoolParam1());
+        // check result - attrs values of simplePojoTest2 has to be equal with attrs values of testSimplePojoTestWithPrefix1
+        Assert.assertEquals(result.getMyPrefixIntParam1MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixIntParam1());
+        Assert.assertEquals(result.getMyPrefixIntParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixIntParam2());
+        Assert.assertEquals(result.getMyPrefixStrParam1MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixStrParam1());
+        Assert.assertEquals(result.getMyPrefixStrParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixStrParam2());
+        Assert.assertEquals(result.getMyPrefixBoolParam2MySuffix(), testSimplePojoTestWithPrefix1.getMyPrefixBoolParam2());
+        Assert.assertEquals(result.isMyPrefixBoolParam1MySuffix(), testSimplePojoTestWithPrefix1.isMyPrefixBoolParam1());
         // check custom parameter
-        Assert.assertEquals(result.getCustomParameter2(), testSimplePojoTestWitPrefix1.getCustomParameter1());
+        Assert.assertEquals(result.getCustomParameter2(), testSimplePojoTestWithPrefix1.getCustomParameter1());
     }
 }

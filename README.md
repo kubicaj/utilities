@@ -7,6 +7,7 @@ The main purpose of this utility is mapping of attributes from class A to class 
 
 ### Samples
 
+The object used in samples: <br/>
 ```
     private static SimplePojoTest1 testSimplePojoTest1 = new SimplePojoTest1();
     static {
@@ -31,7 +32,7 @@ The main purpose of this utility is mapping of attributes from class A to class 
                 .apply();
     };
 ```
-The example show mapping from direct values into SomplePojoTest2
+The example show mapping from direct values into SomplePojoTest2<br/>
 ```
   // the object which you want to set
   SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
@@ -44,7 +45,7 @@ The example show mapping from direct values into SomplePojoTest2
         .apply();
 ```
 
-The example show mapping from testSimplePojoTest1 into SomplePojoTest2
+The example show mapping from testSimplePojoTest1 into SomplePojoTest2<br/>
 ```
   // the object which you want to set
   SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
@@ -55,7 +56,7 @@ The example show mapping from testSimplePojoTest1 into SomplePojoTest2
         .apply();
 ```
 
-The example show creating of Mapper as Functional interface and apply mapping of particular objects. The sample show using of condition mapping as well
+The example show creating of Mapper as Functional interface and apply mapping of particular objects. The sample show using of condition mapping as well<br/>
 ```
   // custom mapper whit condition
   private BiFunction<SimplePojoTest1, ConditionFunction, SimplePojoTest2> MAPPER_SIMPLE_POJO_2_WITH_CONDITION = (SimplePojoTest1      getterObject, ConditionFunction setStrParam1) -> {
@@ -72,14 +73,14 @@ The example show creating of Mapper as Functional interface and apply mapping of
   SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WITH_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
 ```
 
-This example show us simple reflection mapping. There is mapping from pojo SimplePojoTest into SimplePojoTest2
+This example show us simple reflection mapping. There is mapping from pojo SimplePojoTest into SimplePojoTest2<br/>
 ```
   SimplePojoTest2 simplePojoTest2 = ReflectionMapperBuilder
     .createReflectionBuilder(testSimplePojoTest1,SimplePojoTest1.class,SimplePojoTest2.class)
     .apply();
 ```
 
-This example show us simple reflection mapping whit reference object passing. There is mapping from pojo SimplePojoTest into SimplePojoTest2
+This example show us simple reflection mapping whit reference object passing. There is mapping from pojo SimplePojoTest into SimplePojoTest2<br/>
 ```
   SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
   simplePojoTest2 = ReflectionMapperBuilder
@@ -87,7 +88,7 @@ This example show us simple reflection mapping whit reference object passing. Th
     .apply();
 ```
 
-This example show us reflection mapping with setting of prefixies of destination and source class. There you see sample of additional mapping with reflection
+This example show us reflection mapping with setting of prefixies of destination and source class. There you see sample of additional mapping with reflection<br/>
 ```
   SimplePojoTestWithPrefixAndSuffix result = ReflectionMapperBuilder
     .createReflectionBuilder(
@@ -102,9 +103,9 @@ This example show us reflection mapping with setting of prefixies of destination
 ```
 
 This example show simple reflection mapping with excluding of few fields.
-The field intParam1 will exclude because of configuration
-The field iniParam2 will exclude because condition in configuration has positive result
-The field strParam1 will include because condition in configuration has negative result
+The field intParam1 will exclude because of configuration. <br/>
+The field iniParam2 will exclude because condition in configuration has positive result.<br/>
+The field strParam1 will include because condition in configuration has negative result.<br/>
 ```
     SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
         simplePojoTest2.setIntParam1(-10);

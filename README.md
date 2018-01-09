@@ -43,3 +43,20 @@ The Example show mapping from direct values into SomplePojoTest2
         .withSetter(SimplePojoTest2::setStrParam2,testSimplePojoTest1.getStrParam2())
         .apply();
 ```
+
+The Example show mapping from testSimplePojoTest1 into SomplePojoTest2
+```
+  // the object which you want to set
+  SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
+  // create mapper builder
+  MapperBuilder.createBuilder(SimplePojoTest2.class,simplePojoTest2)
+        .withSetter(SimplePojoTest2::setIntParam1, testSimplePojoTest1, SimplePojoTest1::getIntParam1)
+        .withSetter(SimplePojoTest2::setStrParam1, testSimplePojoTest1, SimplePojoTest1::getStrParam1)
+        .apply();
+```
+
+The Example show creating of Mapper as Functional interface and apply mapping of particular objects. The sample show using of condition mapping as well
+```
+  // the condition is false, therefore the strParam1 has to be null
+  SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WHIT_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
+```

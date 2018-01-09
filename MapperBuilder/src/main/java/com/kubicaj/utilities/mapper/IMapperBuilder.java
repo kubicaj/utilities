@@ -2,21 +2,22 @@ package com.kubicaj.utilities.mapper;
 
 /**
  *
- * @param <S> - type of destination object
+ * @param <R> - type of destination object
  */
-public interface IMapperBuilder<S> {
+public interface IMapperBuilder<R> {
 
     /**
      * Apply rules to build destination object.
      *
      * @return - destination object, result of building
      */
-    public S apply();
+    public R apply();
 
     /**
      * destination type of object
      *
      * @return
      */
-    public Class<S> getDestinationType();
+    public Class<R> getDestinationType();
+
 }

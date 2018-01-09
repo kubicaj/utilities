@@ -4,10 +4,7 @@ import com.kubicaj.utilities.mapper.MapperBuilder;
 import com.kubicaj.utilities.mapper.ReflectionMapperBuilder;
 import com.kubicaj.utilities.mapper.function.ConditionFunction;
 import com.kubicaj.utilities.mapper.options.MapperOptions;
-import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTest1;
-import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTest2;
-import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTestWitPrefix;
-import com.test.kubicaj.utilities.mapper.pojoObjects.SimplePojoTestWithPrefixAndSuffix;
+import com.test.kubicaj.utilities.mapper.pojoObjects.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,6 +29,13 @@ public class TestSampleMapper {
         testSimplePojoTest1.setStrParam2("param2");
         testSimplePojoTest1.setBoolParam1(true);
     }
+
+    private static SimplePojoWithInternalObject1 simplePojoWithInternalObject1 = new SimplePojoWithInternalObject1();
+    static {
+        simplePojoWithInternalObject1.setStrParam1("strParam1");
+        simplePojoWithInternalObject1.setSimplePojoTest1(testSimplePojoTest1);
+    }
+
 
     private static SimplePojoTestWitPrefix testSimplePojoTestWithPrefix1 = new SimplePojoTestWitPrefix();
     static {
@@ -268,5 +272,32 @@ public class TestSampleMapper {
         Assert.assertEquals(result.isMyPrefixBoolParam1MySuffix(), testSimplePojoTestWithPrefix1.isMyPrefixBoolParam1());
         // check custom parameter
         Assert.assertEquals(result.getCustomParameter2(), testSimplePojoTestWithPrefix1.getCustomParameter1());
+    }
+
+    @Test
+    public void testMappingOfInternalObject(){
+        SimplePojoWithInternalObject2 simplePojoWithInternalObject2 = new SimplePojoWithInternalObject2();
+        ReflectionMapperBuilder.createReflectionBuilder(
+                simplePojoWithInternalObject1, SimplePojoWithInternalObject1.class,
+                simplePojoWithInternalObject2, SimplePojoWithInternalObject2.class)
+                .withInternalClassMapper(SimplePojoTest1.class,ReflectionMapperBuilder.createReflectionBuilder(SimplePojoTest1.class,SimplePojoTest1.class))
+                .withInternalFieldMapper("simplePojoTest2",ReflectionMapperBuilder.createReflectionBuilder(simplePojoWithInternalObject1.getSimplePojoTest1(),SimplePojoTest1.class,SimplePojoTest2.class))
+        .apply();
+
+        // assert first level attribute
+        Assert.assertEquals(simplePojoWithInternalObject2.getStrParam1(), simplePojoWithInternalObject1.getStrParam1());
+
+        // check result of simple pojo test1
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest1().getIntParam1(), simplePojoWithInternalObject1.getSimplePojoTest1().getIntParam1());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest1().getIntParam2(), simplePojoWithInternalObject1.getSimplePojoTest1().getIntParam2());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest1().getStrParam1(), simplePojoWithInternalObject1.getSimplePojoTest1().getStrParam1());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest1().getStrParam2(), simplePojoWithInternalObject1.getSimplePojoTest1().getStrParam2());
+
+        // check result of simple pojo test2
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest2().getIntParam1(), simplePojoWithInternalObject1.getSimplePojoTest1().getIntParam1());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest2().getIntParam2(), simplePojoWithInternalObject1.getSimplePojoTest1().getIntParam2());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest2().getStrParam1(), simplePojoWithInternalObject1.getSimplePojoTest1().getStrParam1());
+        Assert.assertEquals(simplePojoWithInternalObject2.getSimplePojoTest2().getStrParam2(), simplePojoWithInternalObject1.getSimplePojoTest1().getStrParam2());
+
     }
 }

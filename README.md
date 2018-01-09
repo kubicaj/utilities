@@ -102,7 +102,7 @@ This example show us reflection mapping with setting of prefixies of destination
     .apply();
 ```
 
-This example show simple reflection mapping with excluding of few fields.
+This example show simple reflection mapping with excluding of few fields.<br/>
 The field intParam1 will exclude because of configuration. <br/>
 The field iniParam2 will exclude because condition in configuration has positive result.<br/>
 The field strParam1 will include because condition in configuration has negative result.<br/>
@@ -121,4 +121,43 @@ The field strParam1 will include because condition in configuration has negative
                                 .addExcludingField("intParam1")
                                 .addConditionalExcludingField("intParam2",() -> "a".equals("a"))
                                 .addConditionalExcludingField("strParam1",() -> "a".equals("c")))
+                .apply();
+```
+
+The mapper has ability of deep mapping as well. Imagine we have the following classes:
+```
+public class SimplePojoWithInternalObject1 {
+
+    private SimplePojoTest1 simplePojoTest1;
+    private String strParam1;
+    ...
+}
+```
+and
+```
+public class SimplePojoWithInternalObject2 {
+
+    private SimplePojoTest1 simplePojoTest1;
+    private SimplePojoTest2 simplePojoTest2;
+    private String strParam1;
+    ...
+}
+```
+We want to map:
+<ul>
+ <li/><i>SimplePojoWithInternalObject2#simplePojoTest1</i> from <i>SimplePojoWithInternalObject1#simplePojoTest1</i>
+ <li/><i>SimplePojoWithInternalObject2#simplePojoTest2</i> from <i>SimplePojoWithInternalObject1#simplePojoTest1</i>
+</ul>
+ 
+There are two ways. Use internal class mapper which allow apply mapper for whole fields which have type as input parameter or we can use specific mapper for specific field's name<br/>
+Sample:<br/>
+```
+SimplePojoWithInternalObject2 simplePojoWithInternalObject2 = new SimplePojoWithInternalObject2();
+        ReflectionMapperBuilder.createReflectionBuilder(
+                simplePojoWithInternalObject1, SimplePojoWithInternalObject1.class,
+                simplePojoWithInternalObject2, SimplePojoWithInternalObject2.class)
+                .withInternalClassMapper(SimplePojoTest1.class,ReflectionMapperBuilder.createReflectionBuilder(SimplePojoTest1.class,SimplePojoTest1.class))
+                // for field simplePojoTest2 use source SimplePojoWithInternalObject1#simplePojoTest1 
+                .withInternalFieldMapper("simplePojoTest2",ReflectionMapperBuilder.createReflectionBuilder(simplePojoWithInternalObject1.getSimplePojoTest1(),SimplePojoTest1.class,SimplePojoTest2.class))
+        .apply();
 ```

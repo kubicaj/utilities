@@ -193,6 +193,32 @@ public class TestSampleMapper {
         Assert.assertEquals(simplePojoTest2.getStrParam2(), testSimplePojoTest1.getStrParam2());
     }
 
+    /**
+     * test with excluding fields
+     */
+    @Test
+    public void testReflectionWithExcludingFields(){
+        SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
+        simplePojoTest2.setIntParam1(-10);
+        simplePojoTest2.setIntParam2(-11);
+        simplePojoTest2.setStrParam1("testB");
+        ReflectionMapperBuilder
+                .createReflectionBuilder(
+                        testSimplePojoTest1,
+                        SimplePojoTest1.class,
+                        simplePojoTest2,
+                        SimplePojoTest2.class,
+                        new MapperOptions()
+                                .addExcludingField("intParam1")
+                                .addConditionalExcludingField("intParam2",() -> "a".equals("a"))
+                                .addConditionalExcludingField("strParam1",() -> "a".equals("c")))
+                .apply();
+        // check result
+        Assert.assertEquals(simplePojoTest2.getIntParam1(), -10);
+        Assert.assertEquals(simplePojoTest2.getIntParam2(), Integer.valueOf(-11));
+        Assert.assertEquals(simplePojoTest2.getStrParam1(), testSimplePojoTest1.getStrParam1());
+        Assert.assertEquals(simplePojoTest2.getStrParam2(), testSimplePojoTest1.getStrParam2());
+    }
 
     /**
      * test reflection mapping with prefixes and suffixes

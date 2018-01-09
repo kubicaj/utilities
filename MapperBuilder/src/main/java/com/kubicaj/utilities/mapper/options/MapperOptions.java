@@ -1,6 +1,13 @@
 package com.kubicaj.utilities.mapper.options;
 
 import com.kubicaj.utilities.mapper.exception.MapperException;
+import com.kubicaj.utilities.mapper.function.ConditionFunction;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Class represented options for mapping object
@@ -85,6 +92,13 @@ public class MapperOptions {
      * Empty value
      */
     private String destinationObjectFieldSuffixe = "";
+
+    /**
+     * The set of fields which are exclude from mapping
+     * Key: the field name
+     * Value: condition of excluding. It can be set condition excluding of fields
+     */
+    private Map<String, Optional<ConditionFunction>> excludingFields = new HashMap<>();
 
     // -----------------------------------------------------------------------------------------------------------------
     // GETTERS AND SETTERS
@@ -201,5 +215,53 @@ public class MapperOptions {
     public MapperOptions setDestinationObjectFieldSuffixe(String destinationObjectFieldSuffixe) {
         this.destinationObjectFieldSuffixe = destinationObjectFieldSuffixe;
         return this;
+    }
+
+    /**
+     * add field which will exclude from mapping. Be aware that the {@code fieldName} has to be full name of field
+     * including prefix and suffix.
+     * This option is valid only for {@link com.kubicaj.utilities.mapper.ReflectionMapperBuilder}
+     *
+     * @param fieldName - name of excluding field name
+     * @return - this instance
+     */
+    public MapperOptions addExcludingField(String fieldName) {
+        excludingFields.put(fieldName, Optional.empty());
+        return this;
+    }
+
+    /**
+     * add field which will exclude from mapping when condition represented by {@link ConditionFunction} in {@code predicate} will be valid.
+     * Be aware that the {@code fieldName} has to be full name of field including prefix and suffix.
+     * This option is valid only for {@link com.kubicaj.utilities.mapper.ReflectionMapperBuilder}
+     *
+     * @param fieldName         - name of excluding field name
+     * @param conditionFunction - condition of excluding field
+     * @return - this instance
+     */
+    public MapperOptions addConditionalExcludingField(String fieldName, ConditionFunction conditionFunction) {
+        excludingFields.put(fieldName, Optional.of(conditionFunction));
+        return this;
+    }
+
+    /**
+     * check if field is exclude from mapping
+     *
+     * @param fieldName - field name
+     * @return - true = field is exclude, false = the field will process in mapping
+     */
+    public boolean isFieldExcluding(String fieldName) {
+        Optional<ConditionFunction> conditionFunction = excludingFields.get(fieldName);
+        if (conditionFunction == null) {
+            // if there is no value in map then the field is include in mapping
+            return false;
+        }
+        if (conditionFunction.isPresent()) {
+            // if there is predicate then evaluate it. If result is true then we exclude field else not
+            return conditionFunction.get().test();
+        } else {
+            // if there is field in map but the predicate is not present then we know that field is exclude from mapping
+            return true;
+        }
     }
 }

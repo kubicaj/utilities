@@ -72,11 +72,11 @@ public class ReflectionMapperBuilder<R, S> extends MapperBuilder<R> {
      *
      * @param sourceObject
      * @param sourceObjectType
-     * @param destinationObject - object of type <R> where the values will be set
+     * @param destinationObject     - object of type <R> where the values will be set
      * @param destinationObjectType
      */
     protected ReflectionMapperBuilder(S sourceObject, Class<S> sourceObjectType, R destinationObject, Class<R> destinationObjectType) {
-        super(destinationObject,destinationObjectType);
+        super(destinationObject, destinationObjectType);
         this.sourceObjectType = sourceObjectType;
         this.sourceObject = sourceObject;
     }
@@ -139,18 +139,21 @@ public class ReflectionMapperBuilder<R, S> extends MapperBuilder<R> {
     public R apply() {
         Collection<Field> destinationObjectFields = ReflectionUtils.getDeclarativeFields(destinationObjectType);
         destinationObjectFields.stream().forEach(field -> {
-            String fieldBaseName = getDestinationBaseFieldName(field);
-            String setterFunctionName = "set" + WordUtils.capitalize(field.getName());
-            String getterFunctionName = getSourceMethodGetterName(fieldBaseName, field.getType().equals(boolean.class));
-            // search getter function
-            Method getterFunction = ReflectionUtils.findMethodByName(sourceObjectType, getterFunctionName);
-            if (getterFunction != null) {
-                // search setter method
-                Method setterMethod = ReflectionUtils.findMethodByName(destinationObjectType, setterFunctionName, field.getType());
-                // get result of getter function
-                Object getterResult = ReflectionUtils.invokeMethod(getterFunction, sourceObject);
-                // invoke setter
-                ReflectionUtils.invokeMethod(setterMethod, destinationObject, getterResult);
+            // check if field is excluding from mapping. If not then continue
+            if (!mapperOptions.isFieldExcluding(field.getName())) {
+                String fieldBaseName = getDestinationBaseFieldName(field);
+                String setterFunctionName = "set" + WordUtils.capitalize(field.getName());
+                String getterFunctionName = getSourceMethodGetterName(fieldBaseName, field.getType().equals(boolean.class));
+                // search getter function
+                Method getterFunction = ReflectionUtils.findMethodByName(sourceObjectType, getterFunctionName);
+                if (getterFunction != null) {
+                    // search setter method
+                    Method setterMethod = ReflectionUtils.findMethodByName(destinationObjectType, setterFunctionName, field.getType());
+                    // get result of getter function
+                    Object getterResult = ReflectionUtils.invokeMethod(getterFunction, sourceObject);
+                    // invoke setter
+                    ReflectionUtils.invokeMethod(setterMethod, destinationObject, getterResult);
+                }
             }
         });
         // call processing of others mapping rules

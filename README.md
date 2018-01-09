@@ -100,3 +100,24 @@ This example show us reflection mapping with setting of prefixies of destination
     .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2,testSimplePojoTestWitPrefix1.getCustomParameter1())
     .apply();
 ```
+
+This example show simple reflection mapping with excluding of few fields.
+The field intParam1 will exclude because of configuration
+The field iniParam2 will exclude because condition in configuration has positive result
+The field strParam1 will include because condition in configuration has negative result
+```
+    SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
+        simplePojoTest2.setIntParam1(-10);
+        simplePojoTest2.setIntParam2(-11);
+        simplePojoTest2.setStrParam1("testB");
+        ReflectionMapperBuilder
+                .createReflectionBuilder(
+                        testSimplePojoTest1,
+                        SimplePojoTest1.class,
+                        simplePojoTest2,
+                        SimplePojoTest2.class,
+                        new MapperOptions()
+                                .addExcludingField("intParam1")
+                                .addConditionalExcludingField("intParam2",() -> "a".equals("a"))
+                                .addConditionalExcludingField("strParam1",() -> "a".equals("c")))
+```

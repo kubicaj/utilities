@@ -31,7 +31,7 @@ The main purpose of this utility is mapping of attributes from class A to class 
                 .apply();
     };
 ```
-The Example show mapping from direct values into SomplePojoTest2
+The example show mapping from direct values into SomplePojoTest2
 ```
   // the object which you want to set
   SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
@@ -44,7 +44,7 @@ The Example show mapping from direct values into SomplePojoTest2
         .apply();
 ```
 
-The Example show mapping from testSimplePojoTest1 into SomplePojoTest2
+The example show mapping from testSimplePojoTest1 into SomplePojoTest2
 ```
   // the object which you want to set
   SimplePojoTest2 simplePojoTest2 = new SimplePojoTest2();
@@ -55,8 +55,39 @@ The Example show mapping from testSimplePojoTest1 into SomplePojoTest2
         .apply();
 ```
 
-The Example show creating of Mapper as Functional interface and apply mapping of particular objects. The sample show using of condition mapping as well
+The example show creating of Mapper as Functional interface and apply mapping of particular objects. The sample show using of condition mapping as well
 ```
+  // custom mapper whit condition
+  private BiFunction<SimplePojoTest1, ConditionFunction, SimplePojoTest2> MAPPER_SIMPLE_POJO_2_WITH_CONDITION = (SimplePojoTest1      getterObject, ConditionFunction setStrParam1) -> {
+      return MapperBuilder.createBuilder(SimplePojoTest2.class)
+        .withSetter(SimplePojoTest2::setIntParam1, testSimplePojoTest1, SimplePojoTest1::getIntParam1)
+        .withStartCondition(setStrParam1)
+          .withSetter(SimplePojoTest2::setStrParam1, testSimplePojoTest1, SimplePojoTest1::getStrParam1)
+        .withEndCondition()
+        .withSetter(SimplePojoTest2::setStrParam2, testSimplePojoTest1, SimplePojoTest1::getStrParam2)
+        .apply();
+    };
+    
   // the condition is false, therefore the strParam1 has to be null
-  SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WHIT_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
+  SimplePojoTest2 simplePojoTest2 = MAPPER_SIMPLE_POJO_2_WITH_CONDITION.apply(testSimplePojoTest1,() -> "a".equals("b"));
+```
+
+This example show us simple reflection mapping. There is mapping from pojo SimplePojoTest into SimplePojoTest2
+```
+  SimplePojoTest2 simplePojoTest2 = ReflectionMapperBuilder
+    .createReflectionBuilder(testSimplePojoTest1,SimplePojoTest1.class,SimplePojoTest2.class).apply();
+```
+
+This example show us reflection mapping with setting of prefixies of destination and source class. There you see sample of additional mapping with reflection
+```
+  SimplePojoTestWithPrefixAndSuffix result = ReflectionMapperBuilder
+    .createReflectionBuilder(
+      testSimplePojoTestWitPrefix1,
+      SimplePojoTestWitPrefix.class,
+      SimplePojoTestWithPrefixAndSuffix.class,new MapperOptions()
+                                .setDestinationObjectFieldPrefix("myPrefix")
+                                .setDestinationObjectFieldSuffixe("MySuffix")
+                                .setSourceObjectFieldPrefix("myPrefix"))
+                                    .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2,testSimplePojoTestWitPrefix1.getCustomParameter1())
+                                    .apply();
 ```

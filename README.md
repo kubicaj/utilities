@@ -75,7 +75,8 @@ The example show creating of Mapper as Functional interface and apply mapping of
 This example show us simple reflection mapping. There is mapping from pojo SimplePojoTest into SimplePojoTest2
 ```
   SimplePojoTest2 simplePojoTest2 = ReflectionMapperBuilder
-    .createReflectionBuilder(testSimplePojoTest1,SimplePojoTest1.class,SimplePojoTest2.class).apply();
+    .createReflectionBuilder(testSimplePojoTest1,SimplePojoTest1.class,SimplePojoTest2.class)
+    .apply();
 ```
 
 This example show us reflection mapping with setting of prefixies of destination and source class. There you see sample of additional mapping with reflection
@@ -85,9 +86,9 @@ This example show us reflection mapping with setting of prefixies of destination
       testSimplePojoTestWitPrefix1,
       SimplePojoTestWitPrefix.class,
       SimplePojoTestWithPrefixAndSuffix.class,new MapperOptions()
-                                .setDestinationObjectFieldPrefix("myPrefix")
-                                .setDestinationObjectFieldSuffixe("MySuffix")
-                                .setSourceObjectFieldPrefix("myPrefix"))
-                                    .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2,testSimplePojoTestWitPrefix1.getCustomParameter1())
-                                    .apply();
+        .setDestinationObjectFieldPrefix("myPrefix")
+        .setDestinationObjectFieldSuffixe("MySuffix")
+        .setSourceObjectFieldPrefix("myPrefix"))
+    .withSetter(SimplePojoTestWithPrefixAndSuffix::setCustomParameter2,testSimplePojoTestWitPrefix1.getCustomParameter1())
+    .apply();
 ```

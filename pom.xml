@@ -19,7 +19,7 @@
     </properties>
 
     <modules>
-        <module>MapperBuilder</module>
+        <module>PojoMapperBuilder</module>
     </modules>
 
 

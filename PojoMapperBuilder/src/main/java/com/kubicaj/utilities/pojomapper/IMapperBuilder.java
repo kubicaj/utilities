@@ -1,4 +1,4 @@
-package com.kubicaj.utilities.mapper;
+package com.kubicaj.utilities.pojomapper;
 
 /**
  *

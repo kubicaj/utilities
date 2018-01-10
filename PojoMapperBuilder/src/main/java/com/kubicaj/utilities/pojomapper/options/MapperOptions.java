@@ -1,13 +1,11 @@
-package com.kubicaj.utilities.mapper.options;
+package com.kubicaj.utilities.pojomapper.options;
 
-import com.kubicaj.utilities.mapper.exception.MapperException;
-import com.kubicaj.utilities.mapper.function.ConditionFunction;
+import com.kubicaj.utilities.pojomapper.exception.MapperException;
+import com.kubicaj.utilities.pojomapper.function.ConditionFunction;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * Class represented options for mapping object
@@ -220,7 +218,7 @@ public class MapperOptions {
     /**
      * add field which will exclude from mapping. Be aware that the {@code fieldName} has to be full name of field
      * including prefix and suffix.
-     * This option is valid only for {@link com.kubicaj.utilities.mapper.ReflectionMapperBuilder}
+     * This option is valid only for {@link com.kubicaj.utilities.pojomapper.ReflectionMapperBuilder}
      *
      * @param fieldName - name of excluding field name
      * @return - this instance
@@ -233,7 +231,7 @@ public class MapperOptions {
     /**
      * add field which will exclude from mapping when condition represented by {@link ConditionFunction} in {@code predicate} will be valid.
      * Be aware that the {@code fieldName} has to be full name of field including prefix and suffix.
-     * This option is valid only for {@link com.kubicaj.utilities.mapper.ReflectionMapperBuilder}
+     * This option is valid only for {@link com.kubicaj.utilities.pojomapper.ReflectionMapperBuilder}
      *
      * @param fieldName         - name of excluding field name
      * @param conditionFunction - condition of excluding field

@@ -1,4 +1,4 @@
-package com.kubicaj.utilities.mapper.function;
+package com.kubicaj.utilities.pojomapper.function;
 
 /**
  * Class represented predictor without parameters

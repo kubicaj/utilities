@@ -1,7 +1,7 @@
 # utilities
 Various utilities for Java programming
 
-## Mapper utility
+## POJO Mapper utility
 
 The main purpose of this utility is mapping of attributes from class A to class B or mapping of particular values to class B
 

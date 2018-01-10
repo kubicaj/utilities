@@ -1,4 +1,4 @@
-package com.kubicaj.utilities.mapper.function;
+package com.kubicaj.utilities.pojomapper.function;
 
 /**
  * function interface represented setter function

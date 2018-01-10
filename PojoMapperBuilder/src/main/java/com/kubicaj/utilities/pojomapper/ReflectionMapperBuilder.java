@@ -1,7 +1,7 @@
-package com.kubicaj.utilities.mapper;
+package com.kubicaj.utilities.pojomapper;
 
-import com.kubicaj.utilities.mapper.options.MapperOptions;
-import com.kubicaj.utilities.mapper.reflection.ReflectionUtils;
+import com.kubicaj.utilities.pojomapper.options.MapperOptions;
+import com.kubicaj.utilities.pojomapper.reflection.ReflectionUtils;
 import org.apache.commons.lang.WordUtils;
 
 import java.lang.reflect.Field;

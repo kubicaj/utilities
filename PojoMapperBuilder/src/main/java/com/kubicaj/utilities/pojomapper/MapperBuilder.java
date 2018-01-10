@@ -1,10 +1,10 @@
-package com.kubicaj.utilities.mapper;
+package com.kubicaj.utilities.pojomapper;
 
-import com.kubicaj.utilities.mapper.function.ConditionFunction;
-import com.kubicaj.utilities.mapper.function.GetterFunction;
-import com.kubicaj.utilities.mapper.function.ProcessingFunction;
-import com.kubicaj.utilities.mapper.function.SetterFunction;
-import com.kubicaj.utilities.mapper.options.MapperOptions;
+import com.kubicaj.utilities.pojomapper.function.ConditionFunction;
+import com.kubicaj.utilities.pojomapper.function.GetterFunction;
+import com.kubicaj.utilities.pojomapper.function.ProcessingFunction;
+import com.kubicaj.utilities.pojomapper.function.SetterFunction;
+import com.kubicaj.utilities.pojomapper.options.MapperOptions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

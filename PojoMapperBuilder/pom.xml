@@ -8,8 +8,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.profinit.mapper</groupId>
-    <artifactId>function-base-mapper-builder</artifactId>
+    <groupId>com.kubicaj.mapper</groupId>
+    <artifactId>pojo-mapper-builder</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

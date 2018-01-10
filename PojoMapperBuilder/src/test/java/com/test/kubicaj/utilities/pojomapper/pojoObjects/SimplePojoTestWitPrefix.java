@@ -1,4 +1,4 @@
-package com.test.kubicaj.utilities.mapper.pojoObjects;
+package com.test.kubicaj.utilities.pojomapper.pojoObjects;
 
 public class SimplePojoTestWitPrefix {
 

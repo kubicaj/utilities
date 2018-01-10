@@ -1,6 +1,6 @@
-package com.test.kubicaj.utilities.mapper.pojoObjects;
+package com.test.kubicaj.utilities.pojomapper.pojoObjects;
 
-public class SimplePojoTest1 {
+public class SimplePojoTest2 {
 
     private int intParam1;
     private Integer intParam2;

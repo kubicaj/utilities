@@ -1,10 +1,10 @@
-package com.test.kubicaj.utilities.mapper;
+package com.test.kubicaj.utilities.pojomapper;
 
 import com.kubicaj.utilities.pojomapper.MapperBuilder;
 import com.kubicaj.utilities.pojomapper.ReflectionMapperBuilder;
 import com.kubicaj.utilities.pojomapper.function.ConditionFunction;
 import com.kubicaj.utilities.pojomapper.options.MapperOptions;
-import com.test.kubicaj.utilities.mapper.pojoObjects.*;
+import com.test.kubicaj.utilities.pojomapper.pojoObjects.*;
 import org.junit.Assert;
 import org.junit.Test;
 
